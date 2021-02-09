@@ -1,0 +1,12 @@
+.container,
+.search {
+  max-width: 420px;
+}
+
+@media (min-width: 768px) {
+  .container,
+  .search {
+    min-width: 420px;
+    max-width: 938px;
+  }
+}

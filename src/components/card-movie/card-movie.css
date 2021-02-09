@@ -1,0 +1,84 @@
+.cardStyle {
+  box-shadow: 2px 2px 2px rgb(197, 197, 197);
+  max-width: 387px;
+  margin: 20px auto 25px;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+@media screen and (min-width: 768px) {
+  .cardStyle {
+    max-width: 450px;
+    max-height: 300px;
+  }
+}
+
+.imageStyle {
+  max-width: 60px;
+  max-height: 90px;
+  margin-right: 20px;
+}
+
+@media screen and (min-width: 768px) {
+  .imageStyle {
+    max-width: 170px;
+    min-height: 281px;
+  }
+}
+
+.titleAndRating {
+  display: flex;
+  justify-content: space-between;
+}
+
+.date,
+.genres {
+  margin-bottom: 10px;
+}
+
+.overview {
+  max-width: 367px;
+  position: relative;
+  right: 80px;
+}
+
+@media (min-width: 768px) {
+  .overview {
+    position: relative;
+    right: 0;
+  }
+}
+
+.example {
+  text-align: center;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  padding: 30px 50px;
+  margin: 20px 0;
+}
+
+.ratingСircle {
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.colorRatingСircleToThree {
+  border: 2px solid #e90000;
+}
+
+.colorRatingСircleToFive {
+  border: 2px solid #e97e00;
+}
+
+.colorRatingСircleToSeven {
+  border: 2px solid #e9d100;
+}
+
+.colorRatingСircleAboveSeven {
+  border: 2px solid #66e900;
+}
