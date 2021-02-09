@@ -36,7 +36,6 @@ const App = () => {
 
   return (
     <GenresContext.Provider value={genres}>
-      {/* <Row gutter={[16, 16]} justify="space-between"> */}
       <div className="container">
         <Tabs defaultActiveKey="1" centered>
           <TabPane tab="Search" key="1">
@@ -51,7 +50,6 @@ const App = () => {
           </TabPane>
         </Tabs>
       </div>
-      {/* </Row> */}
     </GenresContext.Provider>
   );
 };
