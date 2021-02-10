@@ -13,6 +13,7 @@ const App = () => {
   const [valueFromInput, setValueFromInput] = useState('return');
   const [page, setPage] = useState(1);
   const [genres, setGenres] = useState([]);
+  const [tab, setTab] = useState(true);
 
   const { TabPane } = Tabs;
 
@@ -22,6 +23,10 @@ const App = () => {
 
   function changePage(num) {
     setPage(num);
+  }
+
+  function getTab(key) {
+    if (key === 'Rated') setTab(true);
   }
 
   function getGenres() {
@@ -37,16 +42,16 @@ const App = () => {
   return (
     <GenresContext.Provider value={genres}>
       <div className="container">
-        <Tabs defaultActiveKey="1" centered>
-          <TabPane tab="Search" key="1">
+        <Tabs onTabClick={(key) => getTab(key)} defaultActiveKey="1" centered>
+          <TabPane tab="Search" key="Search">
             <Search className="search" getDataFromInput={debounce(getDataFromInput, 750)} />
 
             <CardMovie value={valueFromInput} page={page} />
 
             <Pagination style={{ maxWidth: 420 }} onChange={(elem) => changePage(elem)} defaultCurrent={1} total={50} />
           </TabPane>
-          <TabPane tab="Rated" key="2">
-            <RatedMovie />
+          <TabPane tab="Rated" key="Rated">
+            <RatedMovie tab={tab} settab={setTab} />
           </TabPane>
         </Tabs>
       </div>

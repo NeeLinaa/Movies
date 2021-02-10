@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
+import PropTypes from 'prop-types';
 import { Image, Rate, Typography, Spin, Alert, Col, Row } from 'antd';
 import { format } from 'date-fns';
 import './rated-movie.css';
@@ -6,7 +7,7 @@ import GenresContext from '../context/context';
 
 const key = 'b14771c0adfdc54f59204d41d5bf2302';
 
-const RatedMovie = () => {
+const RatedMovie = ({ tab, setTab }) => {
   const [array, setArray] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -29,7 +30,7 @@ const RatedMovie = () => {
         .catch(onError);
     };
     sendRequest();
-  }, [array]);
+  }, [tab]);
 
   const checkOnlineState = () => <Alert message="No internet connection" type="warning" showIcon closable />;
 
@@ -100,6 +101,8 @@ const RatedMovie = () => {
     );
   }
 
+  useEffect(() => setTab(false));
+
   function spinner() {
     return (
       <div className="example">
@@ -121,6 +124,16 @@ const RatedMovie = () => {
       <Row justify="space-around">{array.map((movie) => ratedCard(movie))}</Row>
     </div>
   );
+};
+
+RatedMovie.defaultProps = {
+  tab: false,
+  setTab: () => {},
+};
+
+RatedMovie.propTypes = {
+  tab: PropTypes.bool,
+  setTab: PropTypes.func,
 };
 
 export default RatedMovie;

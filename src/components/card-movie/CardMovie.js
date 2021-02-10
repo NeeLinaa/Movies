@@ -17,14 +17,6 @@ const CardMovie = ({ value, page }) => {
     setError(true);
   };
 
-  function getSession() {
-    fetch(`https://api.themoviedb.org/3/authentication/guest_session/new?api_key=${key}`)
-      .then((resp) => resp.json())
-      .then((data) => localStorage.setItem('session_id', data.guest_session_id));
-  }
-
-  const checkOnlineState = () => <Alert message="No internet connection" type="warning" showIcon closable />;
-
   useEffect(() => {
     function sendRequest() {
       fetch(`https://api.themoviedb.org/3/search/movie?api_key=${key}&query=${value}&page=${page}`)
@@ -37,6 +29,14 @@ const CardMovie = ({ value, page }) => {
     }
     sendRequest();
   }, [value, page]);
+
+  function getSession() {
+    fetch(`https://api.themoviedb.org/3/authentication/guest_session/new?api_key=${key}`)
+      .then((resp) => resp.json())
+      .then((data) => localStorage.setItem('session_id', data.guest_session_id));
+  }
+
+  const checkOnlineState = () => <Alert message="No internet connection" type="warning" showIcon closable />;
 
   useEffect(() => {
     getSession();
@@ -57,10 +57,6 @@ const CardMovie = ({ value, page }) => {
       }
     );
   }
-
-  // useEffect(() => {
-  //   sendRate();
-  // }, []);
 
   function shortText(longText, maxLength, postfix) {
     const pos = longText.indexOf(' ', maxLength);
