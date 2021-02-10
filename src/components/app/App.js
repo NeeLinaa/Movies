@@ -14,6 +14,7 @@ const App = () => {
   const [page, setPage] = useState(1);
   const [genres, setGenres] = useState([]);
   const [tab, setTab] = useState(true);
+  console.log(tab);
 
   const { TabPane } = Tabs;
 
@@ -51,7 +52,7 @@ const App = () => {
             <Pagination style={{ maxWidth: 420 }} onChange={(elem) => changePage(elem)} defaultCurrent={1} total={50} />
           </TabPane>
           <TabPane tab="Rated" key="Rated">
-            <RatedMovie tab={tab} settab={setTab} />
+            <RatedMovie tab={tab} setTab={setTab} />
           </TabPane>
         </Tabs>
       </div>

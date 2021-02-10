@@ -19,6 +19,7 @@ const RatedMovie = ({ tab, setTab }) => {
 
   useEffect(() => {
     const sendRequest = () => {
+      console.log('jcndjkfvbjkdf');
       fetch(
         `https://api.themoviedb.org/3/guest_session/${localStorage.getItem('session_id')}/rated/movies?api_key=${key}`
       )
@@ -101,7 +102,11 @@ const RatedMovie = ({ tab, setTab }) => {
     );
   }
 
-  useEffect(() => setTab(false));
+  useEffect(() => {
+    console.log('jdjl;a[[[q[w[[w[w[3253253');
+    setTab(false);
+  });
+  console.log(tab);
 
   function spinner() {
     return (
