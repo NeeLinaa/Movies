@@ -14,7 +14,6 @@ const App = () => {
   const [page, setPage] = useState(1);
   const [genres, setGenres] = useState([]);
   const [tab, setTab] = useState(true);
-  console.log(tab);
 
   const { TabPane } = Tabs;
 
