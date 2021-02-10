@@ -1,3 +1,19 @@
+.cardStyle {
+  box-shadow: 2px 2px 2px rgb(197, 197, 197);
+  max-width: 387px;
+  margin: 20px auto 25px;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+@media screen and (min-width: 768px) {
+  .cardStyle {
+    max-width: 450px;
+    max-height: 300px;
+  }
+}
+
 .imageStyle {
   max-width: 60px;
   max-height: 90px;
