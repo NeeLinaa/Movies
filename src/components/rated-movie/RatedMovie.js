@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
-import { Image, Rate, Typography, Spin, Alert, Col, Row } from 'antd';
+import { Image, Rate, Typography, Spin, Alert, Col, Row, Pagination } from 'antd';
+import 'antd/dist/antd.css';
 import { format } from 'date-fns';
 import './rated-movie.css';
 import GenresContext from '../context/context';
+import ApiService from '../../services';
 
-const key = 'b14771c0adfdc54f59204d41d5bf2302';
-
-const RatedMovie = ({ tab, setTab }) => {
+const RatedMovie = ({ tab, setTab, changePage }) => {
   const [array, setArray] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -18,18 +18,7 @@ const RatedMovie = ({ tab, setTab }) => {
   };
 
   useEffect(() => {
-    const sendRequest = () => {
-      fetch(
-        `https://api.themoviedb.org/3/guest_session/${localStorage.getItem('session_id')}/rated/movies?api_key=${key}`
-      )
-        .then((resp) => resp.json())
-        .then((rez) => {
-          setArray(rez.results);
-          setLoading(false);
-        })
-        .catch(onError);
-    };
-    sendRequest();
+    ApiService.sendRequestRated(setArray, setLoading, onError);
   }, [tab]);
 
   const checkOnlineState = () => <Alert message="No internet connection" type="warning" showIcon closable />;
@@ -67,7 +56,7 @@ const RatedMovie = ({ tab, setTab }) => {
     const { Title, Text } = Typography;
 
     return (
-      <Col xs={24} md={11} key={originalTitle + Math.random() * 100}>
+      <Col xs={24} sm={20} md={20} key={originalTitle + Math.random() * 100}>
         <div className="cardStyle">
           <div className="imageStyle">
             <Image src={image} />
@@ -124,6 +113,9 @@ const RatedMovie = ({ tab, setTab }) => {
   return (
     <div className="container">
       <Row justify="space-around">{array.map((movie) => ratedCard(movie))}</Row>
+      <div className="pagination">
+        <Pagination style={{ maxWidth: 420 }} onChange={(elem) => changePage(elem)} defaultCurrent={1} total={50} />
+      </div>
     </div>
   );
 };
@@ -131,11 +123,13 @@ const RatedMovie = ({ tab, setTab }) => {
 RatedMovie.defaultProps = {
   tab: false,
   setTab: () => {},
+  changePage: () => {},
 };
 
 RatedMovie.propTypes = {
   tab: PropTypes.bool,
   setTab: PropTypes.func,
+  changePage: PropTypes.func,
 };
 
 export default RatedMovie;

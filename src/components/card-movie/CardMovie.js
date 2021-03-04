@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
-import { Image, Rate, Typography, Spin, Alert, Col, Row } from 'antd';
+import { Image, Rate, Typography, Spin, Alert, Col, Row, Pagination } from 'antd';
+import 'antd/dist/antd.css';
 import { format } from 'date-fns';
 import './card-movie.css';
 import GenresContext from '../context/context';
+import ApiService from '../../services';
 
-const key = 'b14771c0adfdc54f59204d41d5bf2302';
-
-const CardMovie = ({ value, page }) => {
+const CardMovie = ({ value, page, changePage }) => {
   const [array, setArray] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -18,45 +18,14 @@ const CardMovie = ({ value, page }) => {
   };
 
   useEffect(() => {
-    function sendRequest() {
-      fetch(`https://api.themoviedb.org/3/search/movie?api_key=${key}&query=${value}&page=${page}`)
-        .then((resp) => resp.json())
-        .then((rez) => {
-          setArray(rez.results);
-          setLoading(false);
-        })
-        .catch(onError);
-    }
-    sendRequest();
+    ApiService.sendRequest(value, page, onError, setArray, setLoading);
   }, [value, page]);
-
-  function getSession() {
-    fetch(`https://api.themoviedb.org/3/authentication/guest_session/new?api_key=${key}`)
-      .then((resp) => resp.json())
-      .then((data) => localStorage.setItem('session_id', data.guest_session_id));
-  }
 
   const checkOnlineState = () => <Alert message="No internet connection" type="warning" showIcon closable />;
 
   useEffect(() => {
-    getSession();
+    ApiService.getSession();
   }, []);
-
-  function sendRate(rateFromCard, id) {
-    localStorage.setItem('rate', rateFromCard);
-    fetch(
-      `https://api.themoviedb.org/3/movie/${id}/rating?api_key=${key}&guest_session_id=${localStorage.getItem(
-        'session_id'
-      )}`,
-      {
-        method: 'POST',
-        body: JSON.stringify({ value: rateFromCard }),
-        headers: {
-          'Content-Type': 'application/json; charset=utf-8',
-        },
-      }
-    );
-  }
 
   function shortText(longText, maxLength, postfix) {
     const pos = longText.indexOf(' ', maxLength);
@@ -121,7 +90,7 @@ const CardMovie = ({ value, page }) => {
               </Text>
             </div>
             <div className="raiting">
-              <Rate allowHalf defaultValue={0} count={10} onChange={(elem) => sendRate(elem, movie.id)} />
+              <Rate allowHalf defaultValue={0} count={10} onChange={(elem) => ApiService.sendRate(elem, movie.id)} />
             </div>
           </div>
         </div>
@@ -148,6 +117,9 @@ const CardMovie = ({ value, page }) => {
   return (
     <div className="container">
       <Row justify="space-around">{array.map((movie) => newCard(movie))}</Row>
+      <div className="pagination">
+        <Pagination style={{ maxWidth: 420 }} onChange={(elem) => changePage(elem)} defaultCurrent={1} total={50} />
+      </div>
     </div>
   );
 };
@@ -155,11 +127,13 @@ const CardMovie = ({ value, page }) => {
 CardMovie.defaultProps = {
   value: 'return',
   page: 0,
+  changePage: () => {},
 };
 
 CardMovie.propTypes = {
   value: PropTypes.string,
   page: PropTypes.number,
+  changePage: PropTypes.func,
 };
 
 export default CardMovie;

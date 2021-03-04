@@ -1,12 +1,26 @@
 .container,
 .search {
   max-width: 420px;
+  background-color: #fff;
+}
+
+.container {
+  height: 100%;
 }
 
 @media (min-width: 768px) {
-  .container,
-  .search {
+  .container {
     min-width: 420px;
+    max-width: 990px;
+  }
+
+  .search {
+    margin: 0 auto;
     max-width: 938px;
   }
+}
+
+.pagination {
+  max-width: 300px;
+  margin: 0 auto;
 }
