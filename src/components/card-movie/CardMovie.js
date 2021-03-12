@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { Alert, Row, Pagination } from 'antd';
 import 'antd/dist/antd.css';
 import debounce from 'lodash.debounce';
@@ -9,11 +8,21 @@ import './card-movie.css';
 import ApiService from '../../services';
 import { shortText, checkOnlineState, spinner } from '../../utilits';
 
-const CardMovie = ({ value, page, changePage, getDataFromInput }) => {
+const CardMovie = () => {
   const apiService = new ApiService();
+  const [valueFromInput, setValueFromInput] = useState('return');
+  const [page, setPage] = useState(1);
   const [array, setArray] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+
+  function getDataFromInput(event) {
+    setValueFromInput(event.target.value);
+  }
+
+  function changePage(num) {
+    setPage(num);
+  }
 
   const onError = () => {
     setLoading(false);
@@ -23,13 +32,13 @@ const CardMovie = ({ value, page, changePage, getDataFromInput }) => {
   /* eslint-disable */
   useEffect(() => {
     apiService
-      .sendRequest(value, page)
+      .sendRequest(valueFromInput, page)
       .then((rez) => {
         setArray(rez.results);
         setLoading(false);
       })
       .catch(onError);
-  }, [value, page]);
+  }, [valueFromInput, page]);
 
   useEffect(() => {
     apiService.getSession();
@@ -61,20 +70,6 @@ const CardMovie = ({ value, page, changePage, getDataFromInput }) => {
       </div>
     </div>
   );
-};
-
-CardMovie.defaultProps = {
-  value: 'return',
-  page: 0,
-  changePage: () => {},
-  getDataFromInput: () => {},
-};
-
-CardMovie.propTypes = {
-  value: PropTypes.string,
-  page: PropTypes.number,
-  changePage: PropTypes.func,
-  getDataFromInput: PropTypes.func,
 };
 
 export default CardMovie;

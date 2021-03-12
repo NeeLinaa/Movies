@@ -32,7 +32,7 @@ const CardContent = ({ movie, ratingRequest, shortText }) => {
     const { Title, Text } = Typography;
 
     return (
-      <Col xs={24} md={11} key={originalTitle + Math.random() * 100}>
+      <Col sm={24} md={10} style={{ maxWidth: '387px' }}>
         <div className="cardStyle">
           <div className="imageStyle">
             <Image src={image} />

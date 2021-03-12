@@ -1,6 +1,6 @@
 .cardStyle {
   box-shadow: 4px 4px 4px 0 rgb(197, 197, 197);
-  max-width: 387px;
+  min-width: 377px;
   margin: 20px auto 25px;
   padding: 10px;
   display: flex;
