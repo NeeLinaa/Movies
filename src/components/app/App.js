@@ -18,8 +18,11 @@ const App = () => {
     if (key === 'Rated') setTab('ratedFilms');
   }
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(apiService.getGenres(setGenres), []);
+  /* eslint-disable */
+  useEffect(() => {
+    apiService.getGenres(setGenres);
+  }, []);
+  /* eslint-enable */
 
   return (
     <GenresContext.Provider value={genres}>
