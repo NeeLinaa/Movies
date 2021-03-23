@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { Alert, Row, Pagination } from 'antd';
 import 'antd/dist/antd.css';
-import debounce from 'lodash.debounce';
 import CardContent from '../card-content/CardContent';
 import Search from '../search/Search';
 import './card-movie.css';
 import ApiService from '../../services';
-import { shortText, checkOnlineState, spinner } from '../../utilits';
+import NoNetwork from '../no-network/NoNetwork';
+import Spiner from '../spinner/Spiner';
+import { debounce } from '../../utilits';
+import { saveSessionId } from '../../localStorages';
 
 const CardMovie = () => {
   const apiService = new ApiService();
   const [valueFromInput, setValueFromInput] = useState('return');
   const [page, setPage] = useState(1);
-  const [array, setArray] = useState([]);
+  const [arrayFilms, setArrayFilms] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
@@ -31,29 +33,31 @@ const CardMovie = () => {
 
   /* eslint-disable */
   useEffect(() => {
+    apiService.getSession().then((data) => {
+      saveSessionId(data.guest_session_id);
+    });
+  }, []);
+
+  useEffect(() => {
     apiService
       .sendRequest(valueFromInput, page)
-      .then((rez) => {
-        setArray(rez.results);
+      .then((resp) => {
+        setArrayFilms(resp.results);
         setLoading(false);
       })
       .catch(onError);
   }, [valueFromInput, page]);
-
-  useEffect(() => {
-    apiService.getSession();
-  }, []);
   /* eslint-enable */
 
   const ratingRequest = (elem, id) => apiService.sendRate(elem, id);
 
-  if (loading) return spinner();
+  if (loading) return <Spiner />;
 
-  if (error || array === undefined || array === null) return <Alert message="Something went wrong" type="success" />;
+  if (error || !arrayFilms) return <Alert message="Something went wrong" type="success" />;
 
-  if (!navigator.onLine) return checkOnlineState();
+  if (!navigator.onLine) return <NoNetwork />;
 
-  if (array.length === 0) return <Alert message="Movie not found" type="success" />;
+  if (arrayFilms.length === 0) return <Alert message="Movie not found" type="success" />;
 
   return (
     <div className="container">
@@ -61,12 +65,12 @@ const CardMovie = () => {
         <Search getDataFromInput={debounce(getDataFromInput, 750)} />
       </div>
       <Row justify="space-around">
-        {array.map((movie) => (
-          <CardContent movie={movie} ratingRequest={ratingRequest} shortText={shortText} />
+        {arrayFilms.map((movie) => (
+          <CardContent movie={movie} ratingRequest={ratingRequest} />
         ))}
       </Row>
       <div className="pagination">
-        <Pagination style={{ maxWidth: 420 }} onChange={(elem) => changePage(elem)} defaultCurrent={1} total={50} />
+        <Pagination onChange={(elem) => changePage(elem)} defaultCurrent={1} total={50} />
       </div>
     </div>
   );

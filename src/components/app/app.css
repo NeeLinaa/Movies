@@ -1,3 +1,8 @@
+body {
+  display: flex;
+  justify-content: center;
+}
+
 .container,
 .search {
   max-width: 420px;
@@ -21,6 +26,6 @@
 }
 
 .pagination {
-  max-width: 300px;
+  max-width: 420px;
   margin: 0 auto;
 }

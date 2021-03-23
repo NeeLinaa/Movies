@@ -5,11 +5,12 @@ import 'antd/dist/antd.css';
 import CardContent from '../card-content/CardContent';
 import './rated-movie.css';
 import ApiService from '../../services';
-import { shortText, checkOnlineState, spinner } from '../../utilits';
+import NoNetwork from '../no-network/NoNetwork';
+import Spiner from '../spinner/Spiner';
 
 const RatedMovie = ({ tab, setTab, changePage }) => {
   const apiService = new ApiService();
-  const [array, setArray] = useState([]);
+  const [arrayFilms, setArrayFilms] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
@@ -23,7 +24,7 @@ const RatedMovie = ({ tab, setTab, changePage }) => {
     apiService
       .sendRequestRated()
       .then((rez) => {
-        setArray(rez.results);
+        setArrayFilms(rez.results);
         setLoading(false);
       })
       .catch(onError);
@@ -33,39 +34,39 @@ const RatedMovie = ({ tab, setTab, changePage }) => {
   const ratingRequest = (elem) => elem;
 
   useEffect(() => {
-    setTab(false);
+    setTab('allFilms');
   });
 
-  if (loading) return spinner();
+  if (loading) return <Spiner />;
 
-  if (error || array === undefined || array === null) return <Alert message="Something went wrong" type="success" />;
+  if (error || !arrayFilms) return <Alert message="Something went wrong" type="success" />;
 
-  if (!navigator.onLine) return checkOnlineState();
+  if (!navigator.onLine) return <NoNetwork />;
 
-  if (array.length === 0) return <Alert message="Movie not found" type="success" />;
+  if (arrayFilms.length === 0) return <Alert message="Movie not found" type="success" />;
 
   return (
     <div className="container">
       <Row justify="space-around">
-        {array.map((movie) => (
-          <CardContent movie={movie} ratingRequest={ratingRequest} shortText={shortText} />
+        {arrayFilms.map((movie) => (
+          <CardContent movie={movie} ratingRequest={ratingRequest} />
         ))}
       </Row>
       <div className="pagination">
-        <Pagination style={{ maxWidth: 420 }} onChange={(elem) => changePage(elem)} defaultCurrent={1} total={50} />
+        <Pagination onChange={(elem) => changePage(elem)} defaultCurrent={1} total={50} />
       </div>
     </div>
   );
 };
 
 RatedMovie.defaultProps = {
-  tab: false,
+  tab: '',
   setTab: () => {},
   changePage: () => {},
 };
 
 RatedMovie.propTypes = {
-  tab: PropTypes.bool,
+  tab: PropTypes.string,
   setTab: PropTypes.func,
   changePage: PropTypes.func,
 };

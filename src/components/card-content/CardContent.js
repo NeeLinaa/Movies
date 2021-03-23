@@ -2,17 +2,20 @@ import React, { useContext } from 'react';
 import { Image, Rate, Typography, Col } from 'antd';
 import { format } from 'date-fns';
 import GenresContext from '../context/context';
+import { shortText } from '../../utilits';
 
-const CardContent = ({ movie, ratingRequest, shortText }) => {
+import './CardContent.css';
+
+const CardContent = ({ movie, ratingRequest }) => {
   const genres = useContext(GenresContext);
-  function newCard(mov) {
-    const image = `https://image.tmdb.org/t/p/w500${mov.poster_path}`;
-    const originalTitle = shortText(mov.original_title, 23, '...');
+  function newCard(data) {
+    const image = `https://image.tmdb.org/t/p/w500${data.poster_path}`;
+    const originalTitle = shortText(data.original_title, 23, '...');
     // const date = mov.release_date;
-    const date = format(new Date(mov.release_date), 'PP');
-    const overview = shortText(mov.overview, 70, '...');
-    const rating = mov.vote_average;
-    const movieGenres = mov.genre_ids.slice(0, 2);
+    const date = format(new Date(data.release_date), 'PP');
+    const overview = shortText(data.overview, 70, '...');
+    const rating = data.vote_average;
+    const movieGenres = data.genre_ids.slice(0, 2);
 
     const genresArr = genres.filter((elem) => movieGenres.includes(elem.id)).map((elem) => elem.name);
 
@@ -32,7 +35,7 @@ const CardContent = ({ movie, ratingRequest, shortText }) => {
     const { Title, Text } = Typography;
 
     return (
-      <Col sm={24} md={10} style={{ maxWidth: '387px' }}>
+      <Col sm={24} md={10} className="oneFilm">
         <div className="cardStyle">
           <div className="imageStyle">
             <Image src={image} />

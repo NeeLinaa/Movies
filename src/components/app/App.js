@@ -11,18 +11,15 @@ import './app.css';
 const App = () => {
   const apiService = new ApiService();
   const [genres, setGenres] = useState([]);
-  const [tab, setTab] = useState(true);
+  const [tab, setTab] = useState('allFilms');
   const { TabPane } = Tabs;
 
   function getTab(key) {
-    if (key === 'Rated') setTab(true);
+    if (key === 'Rated') setTab('ratedFilms');
   }
 
-  /* eslint-disable */
-  useEffect(() => {
-    apiService.getGenres(setGenres);
-  }, []);
-  /* eslint-enable */
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(apiService.getGenres(setGenres), []);
 
   return (
     <GenresContext.Provider value={genres}>
