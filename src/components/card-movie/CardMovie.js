@@ -72,7 +72,7 @@ const CardMovie = () => {
         ))}
       </Row>
       <div className="pagination">
-        <Pagination onChange={(elem) => changePage(elem)} defaultCurrent={1} total={totalPages} />
+        <Pagination size="small" onChange={(elem) => changePage(elem)} defaultCurrent={1} total={totalPages} />
       </div>
     </div>
   );

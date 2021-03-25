@@ -14,6 +14,10 @@ const RatedMovie = ({ tab, setTab, changePage }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [totalPages, setTotalPages] = useState(0);
+  const paginationStyle = {
+    maxWidth: 150,
+    margin: '0 auto',
+  };
 
   const onError = () => {
     setLoading(false);
@@ -55,7 +59,13 @@ const RatedMovie = ({ tab, setTab, changePage }) => {
         ))}
       </Row>
       <div className="pagination">
-        <Pagination onChange={(elem) => changePage(elem)} defaultCurrent={1} total={totalPages} />
+        <Pagination
+          size="small"
+          style={paginationStyle}
+          onChange={(elem) => changePage(elem)}
+          defaultCurrent={1}
+          total={totalPages}
+        />
       </div>
     </div>
   );
