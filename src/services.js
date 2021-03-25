@@ -10,14 +10,14 @@ class ApiService {
   sessionId = localStorage.getItem('session_id');
 
   mainFetch = async (url, options) => {
-    try {
+    // try {
       const request = await fetch(url, options);
       if (!request.ok) throw new Error(`Error: ${request.status}`);
       const resp = await request.json();
       return resp;
-    } catch (err) {
-      throw new Error(err);
-    }
+    // } catch (err) {
+    //   throw new Error(err);
+    // }
   };
 
   getGenres = (fn) =>

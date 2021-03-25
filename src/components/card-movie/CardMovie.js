@@ -17,6 +17,7 @@ const CardMovie = () => {
   const [arrayFilms, setArrayFilms] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [totalPages, setTotalPages] = useState(0);
 
   function getDataFromInput(event) {
     setValueFromInput(event.target.value);
@@ -42,6 +43,7 @@ const CardMovie = () => {
     apiService
       .sendRequest(valueFromInput, page)
       .then((resp) => {
+        setTotalPages(resp.total_pages);
         setArrayFilms(resp.results);
         setLoading(false);
       })
@@ -70,7 +72,7 @@ const CardMovie = () => {
         ))}
       </Row>
       <div className="pagination">
-        <Pagination onChange={(elem) => changePage(elem)} defaultCurrent={1} total={50} />
+        <Pagination onChange={(elem) => changePage(elem)} defaultCurrent={1} total={totalPages} />
       </div>
     </div>
   );

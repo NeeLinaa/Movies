@@ -13,6 +13,7 @@ const RatedMovie = ({ tab, setTab, changePage }) => {
   const [arrayFilms, setArrayFilms] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [totalPages, setTotalPages] = useState(0);
 
   const onError = () => {
     setLoading(false);
@@ -24,6 +25,7 @@ const RatedMovie = ({ tab, setTab, changePage }) => {
     apiService
       .sendRequestRated()
       .then((rez) => {
+        setTotalPages(rez.total_pages);
         setArrayFilms(rez.results);
         setLoading(false);
       })
@@ -53,7 +55,7 @@ const RatedMovie = ({ tab, setTab, changePage }) => {
         ))}
       </Row>
       <div className="pagination">
-        <Pagination onChange={(elem) => changePage(elem)} defaultCurrent={1} total={50} />
+        <Pagination onChange={(elem) => changePage(elem)} defaultCurrent={1} total={totalPages} />
       </div>
     </div>
   );
